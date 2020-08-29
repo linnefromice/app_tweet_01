@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import axios from "axios"
 
+import { UserContext } from '../../global/contexts'
 import TweetInterface from '../../models/TweetInterface'
 import ErrorModal from '../../components/common/ErrorModal'
 import TweetComponent from "../../components/tweet/TweetComponent"
@@ -22,7 +23,7 @@ const TweetComponentWrapper = styled.div`
     justify-content: center;
     align-items: center;
 `
-const EditArea = styled.div`
+const EditAreaWrapper = styled.div`
     width: 100%;
     margin: 1vh 0;
     display: flex;
@@ -80,6 +81,7 @@ const DisabledDeleteButton = styled(BaseDeleteButton)`
 `
 
 const BodyContent = (prop:TweetInterface) => {
+    const { isLogin, user } = useContext(UserContext);
     const [isDeleted, setIsDeleted] = useState<boolean>(false)
     const [tweet, setTweet] = useState<TweetInterface>(prop)
     const [newSentence, setNewSentence] = useState<string>("")
@@ -123,6 +125,17 @@ const BodyContent = (prop:TweetInterface) => {
     const DeleteButton = isDeleted
         ? <DisabledDeleteButton>DELETE</DisabledDeleteButton>
         : <ActiveDeleteButton onClick={deleteTweet}>DELETE</ActiveDeleteButton>
+    const EditArea = isLogin && user.name == tweet.name
+        ? <EditAreaWrapper>
+            <InputForUpdate
+                placeholder="Please input new sentence!"
+                value={newSentence}
+                onChange={onChangeNewSentence}            
+            />
+            {UpdateButton}
+            {DeleteButton}
+         </EditAreaWrapper>
+        : null
 
     return (
         <BodyWrapper>
@@ -135,15 +148,7 @@ const BodyContent = (prop:TweetInterface) => {
                         sentence={tweet.sentence}
                     />
                 </TweetComponentWrapper>
-                <EditArea>
-                    <InputForUpdate
-                        placeholder="Please input new sentence!"
-                        value={newSentence}
-                        onChange={onChangeNewSentence}            
-                    />
-                    {UpdateButton}
-                    {DeleteButton}
-                </EditArea>
+                {EditArea}
             </MainTweetArea>
         </BodyWrapper>
     )
