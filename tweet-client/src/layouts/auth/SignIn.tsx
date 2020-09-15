@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import axios from "axios"
 
 import { UserContext } from '../../global/contexts';
@@ -15,13 +15,13 @@ const Form = () => {
   const [formPassword, setFormPassword] = useState<string>(INITIAL_ACCOUNT_PASSWORD)
   const [errors, setErrors] = useState<string[]>([])
 
-  function onChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormEmail(e.target.value)
-  }
+  const onChangeEmail = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormEmail(event.target.value)
+  }, [])
 
-  function onChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormPassword(e.target.value)
-  }
+  const onChangePassword = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormPassword(event.target.value)
+  }, [])
 
   function signIn() {
     if (formEmail === "" || formPassword === "") {

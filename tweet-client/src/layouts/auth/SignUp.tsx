@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 
 import { Wrapper, Header, Title, FormWrapper, Row, Label, Input, SubmitButton } from '../../components/auth/AuthCommonComponents';
@@ -15,21 +15,21 @@ const Form = () => {
   const [formPasswordConfirmation, setFormPasswordConfirmation] = useState<string>("")
   const [errors, setErrors] = useState<string[]>([])
 
-  function onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormName(e.target.value)
-  }
+  const onChangeName = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormName(event.target.value)
+  }, [])
 
-  function onChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormEmail(e.target.value)
-  }
+  const onChangeEmail = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormEmail(event.target.value)
+  }, [])
 
-  function onChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormPassword(e.target.value)
-  }
+  const onChangePassword = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormPassword(event.target.value)
+  }, [])
 
-  function onChangePasswordConfirmation(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormPasswordConfirmation(e.target.value)
-  }
+  const onChangePasswordConfirmation = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormPasswordConfirmation(event.target.value)
+  }, [])
 
   function signUp() {
     if (formName === "" || formEmail === "" || formPassword === "" || formPasswordConfirmation === "" ) {

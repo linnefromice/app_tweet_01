@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext, useCallback } from "react"
 import styled from "styled-components"
 import axios from "axios"
 
@@ -86,10 +86,10 @@ const BodyContent = (prop:TweetInterface) => {
     const [tweet, setTweet] = useState<TweetInterface>(prop)
     const [newSentence, setNewSentence] = useState<string>("")
 
-    function onChangeNewSentence(e: React.ChangeEvent<HTMLInputElement>) {
-        setNewSentence(e.target.value)
-    }
-    
+    const onChangeNewSentence = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+        setNewSentence(event.target.value)
+    }, [])
+
     const fetchTweet = () => {
       axios.get(`http://localhost:3001/tweets/detail/${tweet.id}`)
       .then(result => {

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios"
 
@@ -52,9 +52,10 @@ const CreateTweet = (prop: CreateTweetProp) => {
   const [sentence, setSentence] = useState<string>("")
   const [errors, setErrors] = useState<string[]>([])
 
-  function onChangeSentence(e: React.ChangeEvent<HTMLInputElement>) {
-    setSentence(e.target.value)
-  }
+  const onChangeSentence = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSentence(event.target.value)
+  }, [])
+
   function submit() {
     if (sentence === '') return;
     
